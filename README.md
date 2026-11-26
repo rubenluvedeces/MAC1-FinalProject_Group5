@@ -1,41 +1,47 @@
-# Data-Driven Disaster Preparedness: Flood Risk Prediction for Metro Manila Using Machine Learning
+# Data-Driven Disaster Preparedness: Predicting Rain and Storm Events Across CALABARZON Cities Using Machine Learning
 
 ## Project Overview
-This project develops an end-to-end supervised and unsupervised machine learning pipeline to predict daily urban flood occurrences across four major cities in Metro Manila (**Quezon City, Marikina, Manila, and Pasig**). Following all 10 stages of the Machine Learning Life Cycle in Python (`pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`), the study compares **Logistic Regression** (99.86% test accuracy, 0.92 flood recall) and **Random Forest Classifier** (100.00% test accuracy, 1.00 F1-score) on a leak-free 80/20 stratified split, alongside **K-Means Clustering** ($k = 3$) for operational weather risk profiling.
+This project develops an end-to-end supervised and unsupervised machine learning pipeline to classify rain and thunderstorm events across **18 cities in Region IV-A (CALABARZON)**, including Batangas City, Lipa City, Bacoor, Imus, Dasmariñas, Calamba, Antipolo, and Lucena. Following all 10 stages of the Machine Learning Life Cycle in Python (`pandas`, `numpy`, `matplotlib`, `seaborn`, `scikit-learn`), we evaluate **Logistic Regression** (91.24% accuracy) and **Random Forest Classifier** (92.37% baseline accuracy; 91.32% tuned accuracy with `class_weight='balanced'`, boosting rain recall from 0.26 to 0.49 and F1-score to 0.51) on a leak-free 80/20 stratified split, alongside **K-Means Clustering** ($k = 3$) for operational weather risk profiling.
 
 ---
 
 ## Group Members & Assigned Roles
-* **Ruben M. Luvedeces** — *Data Engineer* (Data loading, inspection, cleaning, and preprocessing pipeline)
-* **Jonalyn C. Carandang** — *Data Analyst* (Exploratory data analysis, 5 statistical visualizations, and written interpretations)
+* **Ruben M. Luvedeces** — *Data Engineer* (Monthly CSV merging, CALABARZON regional filtering, median imputation, and timestamp conversion)
+* **Jonalyn C. Carandang** — *Data Analyst* (Exploratory data analysis, 5 statistical visualizations, and meteorological interpretations)
 * **Trishia Mae Mahusay** — *Machine Learning Engineer* (Feature engineering, 80/20 stratified split, model training, GridSearchCV tuning, error analysis, and K-Means clustering)
-* **Aireen Librea** — *Project & Documentation Lead* (Repository management, IEEE technical paper in Overleaf, deployment/ethics documentation, and defense coordination)
+* **Aireen Librea** — *Project & Documentation Lead* (Repository management, IEEE technical paper in Overleaf, deployment/ethics plan, and defense coordination)
 
 ---
 
 ## Dataset Sourcing & Documentation
-* **Dataset Name:** Metro Manila Flood Prediction (2016–2020, Daily)
+* **Dataset Name:** Philippine Major Cities Weather Data (Filtered to Region IV-A / CALABARZON)
 * **Source Repository:** [Kaggle Dataset Link](https://kaggle.com)
-* **License:** Open / Educational Research Use
-* **Date Retrieved:** November 18, 2026
-* **Dimensions:** 7,308 daily observations (rows) × 7 attributes (columns) spanning January 1, 2016, to December 31, 2020.
+* **License:** Open Public Research / Educational Use
+* **Date Retrieved:** November 26, 2026
+* **Dimensions:** 58,319 three-hour weather observations (rows) × 18 retained features (columns) spanning November 2023 to December 2024 across 18 CALABARZON cities.
 
 ### Data Dictionary
 
-| Column Name | Data Type | Role | Description & Units |
+| Variable | Data Type | Role | Description & Units |
 | :--- | :--- | :--- | :--- |
-| **`Date`** | Date (`datetime64`) | Input Feature (Transformed) | Date of daily environmental observation (`MM/DD/YYYY`), used to extract `Month` and `Is_Wet_Season`. |
-| **`Location`** | Categorical (`string`) | Input Feature | Metro Manila city monitored (`Quezon City`, `Marikina`, `Manila`, `Pasig`), encoded via One-Hot Encoding. |
-| **`Rainfall_mm`** | Numerical (`float`) | Input Feature | Total daily rainfall precipitation in millimeters (`mm`). |
-| **`WaterLevel_m`** | Numerical (`float`) | Input Feature | Measured river or waterway water level in meters (`m`). |
-| **`SoilMoisture_pct`** | Numerical (`float`) | Input Feature | Ground soil moisture saturation percentage (`%`). |
-| **`Elevation_m`** | Numerical (`integer`) | Input Feature | City zone elevation above sea level in meters (`m`). |
-| **`FloodOccurrence`** | Binary (`integer`) | **Target Variable** | Indicates whether flooding occurred (`1` = Flood Occurred, `0` = No Flood). |
+| **`city_name`** | Categorical (`string`) | Input Feature | Monitored CALABARZON city (18 cities), encoded via One-Hot Encoding. |
+| **`datetime`** | Datetime (`Asia/Manila`) | Transformed | Local Philippine observation timestamp used to extract `Month`, `Hour`, and `Is_Wet_Season`. |
+| **`main.temp`** | Numerical (`float`) | Input Feature | Ambient air temperature in degrees Celsius (`°C`). |
+| **`main.feels_like`** | Numerical (`float`) | Input Feature | Heat-index adjusted temperature (`°C`). |
+| **`main.pressure`** | Numerical (`float`) | Input Feature | Atmospheric sea-level pressure in hectopascals (`hPa`). |
+| **`main.humidity`** | Numerical (`float`) | Input Feature | Relative air humidity percentage (`%`). |
+| **`wind.speed`** | Numerical (`float`) | Input Feature | Sustained wind speed in meters per second (`m/s`). |
+| **`wind.gust`** | Numerical (`float`) | Input Feature | Peak wind gust speed (`m/s`), missing values imputed with median (`4.47 m/s`). |
+| **`clouds.all`** | Numerical (`integer`) | Input Feature | Total sky cloud cover percentage (`%`). |
+| **`visibility`** | Numerical (`float`) | Input Feature | Horizontal visibility distance in meters (`m`), imputed with median (`10,000 m`). |
+| **`Month / Hour`** | Numerical (`integer`) | Engineered | Extracted calendar month (`1–12`) and local hour (`0–23`). |
+| **`Is_Wet_Season`** | Binary (`integer`) | Engineered | Philippine monsoon indicator (`1` = June–November, `0` = December–May). |
+| **`Is_Rain_Storm`** | Binary (`integer`) | **Target Variable** | Binary weather target (`1` = Rain or Thunderstorm, `0` = Non-Rain). |
 
 ---
 
 ## Repository Structure
 * `project_code.ipynb` — Complete 10-stage Machine Learning Life Cycle Jupyter Notebook.
-* `metro_manila_flood.csv` — Raw dataset file retrieved from Kaggle.
-* `Technical_Paper.pdf` — Final 6-page two-column IEEE conference paper.
+* `calabarzon_weather.csv` — Filtered CALABARZON dataset (`58,319` rows).
+* `Technical_Paper.pdf` — Final two-column IEEE conference paper.
 * `README.md` — Project overview, team roles, and dataset documentation.
