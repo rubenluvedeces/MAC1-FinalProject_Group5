@@ -45,3 +45,10 @@ This project develops an end-to-end supervised and unsupervised machine learning
 * `calabarzon_weather.csv` — Filtered CALABARZON dataset (`58,319` rows).
 * `Technical_Paper.pdf` — Final two-column IEEE conference paper.
 * `README.md` — Project overview, team roles, and dataset documentation.
+
+---
+
+## Exploratory Data Analysis (EDA) Key Findings
+* *Class Imbalance:* Out of 58,319 CALABARZON weather observations, 90.67% (52,877) are non-rain hours and 9.33% (5,442) are rain/thunderstorm events, requiring stratified splitting and F1-score/Recall optimization.
+* *Regional Exposure:* Rain and storm events occur consistently across monitored Cavite, Laguna, Batangas, Rizal, and Quezon urban centers.
+* *Atmospheric Drivers:* Relative humidity (main.humidity) and cloud cover (clouds.all) show the strongest positive correlation with rain/storms, clustering sharply when humidity exceeds *80%* and atmospheric pressure drops below *1010 hPa*.
